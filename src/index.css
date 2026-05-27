@@ -1,0 +1,601 @@
+/* =========================
+   BASE RESET
+========================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+
+  font-family: Inter, sans-serif;
+
+  background: #0b1220;
+  color: white;
+}
+
+/* =========================
+   APP WRAPPER
+========================= */
+
+.app {
+  width: 100%;
+  height: 100vh;
+
+  overflow: hidden;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  padding: clamp(12px, 3vw, 40px);
+
+  position: relative;
+}
+
+/* =========================
+   CANVAS BACKGROUND
+========================= */
+
+canvas {
+  position: fixed;
+  inset: 0;
+
+  width: 100vw;
+  height: 100vh;
+
+  z-index: 0;
+
+  pointer-events: none;
+}
+
+/* =========================
+   UI LAYER
+========================= */
+
+.ui-layer {
+  position: relative;
+  z-index: 10;
+
+  width: 100%;
+  max-width: 1100px;
+
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 20px;
+
+  min-height: 0;
+}
+
+/* =========================
+   TITLE
+========================= */
+
+.ui-layer h1 {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+
+  font-weight: 700;
+
+  text-align: center;
+
+  letter-spacing: -0.03em;
+}
+
+/* =========================
+   SEARCH BOX
+========================= */
+
+.searchBox {
+  width: 100%;
+  max-width: 620px;
+
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+}
+
+.searchBox input {
+  flex: 1;
+
+  height: 56px;
+
+  border-radius: 18px;
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  background: rgba(255,255,255,0.08);
+
+  backdrop-filter: blur(18px);
+
+  color: white;
+
+  padding: 0 18px;
+
+  outline: none;
+
+  font-size: 0.95rem;
+
+  transition: 0.2s ease;
+}
+
+.searchBox input::placeholder {
+  color: rgba(255,255,255,0.5);
+}
+
+.searchBox input:focus {
+  background: rgba(255,255,255,0.12);
+
+  border-color: rgba(255,255,255,0.2);
+}
+
+.searchBox button {
+  width: 56px;
+  height: 56px;
+
+  border-radius: 16px;
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  background: rgba(255,255,255,0.10);
+
+  backdrop-filter: blur(18px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.searchBox button:hover {
+  transform: translateY(-2px);
+
+  background: rgba(255,255,255,0.16);
+}
+
+.searchBox button svg {
+  transition: transform 0.2s ease;
+}
+
+.searchBox button:hover svg {
+  transform: scale(1.08);
+}
+
+/* =========================
+   MAIN WEATHER CARD
+========================= */
+
+.card {
+  width: 100%;
+  max-width: 720px;
+
+  margin: 0 auto;
+
+  padding: clamp(22px, 4vw, 40px);
+
+  border-radius: 32px;
+
+  background: rgba(255,255,255,0.10);
+
+  backdrop-filter: blur(22px);
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  text-align: center;
+
+  box-shadow:
+    0 20px 60px rgba(0,0,0,0.35),
+    inset 0 1px 1px rgba(255,255,255,0.06);
+}
+
+.card h1 {
+  font-size: clamp(3.5rem, 10vw, 6rem);
+
+  line-height: 1;
+
+  letter-spacing: -0.04em;
+}
+
+.card h2 {
+  margin-top: 8px;
+
+  font-size: clamp(1.2rem, 3vw, 1.6rem);
+
+  font-weight: 600;
+}
+
+.card p {
+  margin-top: 10px;
+
+  opacity: 0.72;
+
+  font-size: 0.95rem;
+}
+
+/* =========================
+   FORECAST SECTION
+========================= */
+
+.forecast {
+  width: 100%;
+  max-width: 720px;
+
+  margin: 0 auto;
+
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  min-height: 0;
+}
+
+.forecast h3 {
+  margin-bottom: 14px;
+
+  font-size: 1.1rem;
+  font-weight: 600;
+
+  opacity: 0.92;
+}
+
+/* =========================
+   FORECAST GRID
+========================= */
+.forecast-grid {
+  flex: 1;
+
+  min-height: 0;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 14px;
+
+  padding-right: 4px;
+
+  /* ✅ ADD THIS */
+  padding-bottom: 24px;
+
+  scrollbar-width: none;
+}
+
+/* =========================
+   FORECAST CARD
+========================= */
+
+.forecast-card {
+  width: 100%;
+
+  min-height: 135px;
+
+  padding: 24px;
+
+  border-radius: 28px;
+
+  background: rgba(255,255,255,0.08);
+
+  backdrop-filter: blur(18px);
+
+  border: 1px solid rgba(255,255,255,0.10);
+
+  position: relative;
+
+  overflow: hidden;
+
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.25),
+    inset 0 1px 1px rgba(255,255,255,0.06);
+}
+
+/* glow layer */
+
+.forecast-card::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  border-radius: 28px;
+
+  background:
+    radial-gradient(
+      circle at top,
+      rgba(120,160,255,0.18),
+      transparent 70%
+    );
+
+  opacity: 0;
+
+  transition: opacity 0.3s ease;
+}
+
+.forecast-card:hover {
+  transform: translateY(-4px);
+
+  background: rgba(255,255,255,0.12);
+
+  box-shadow:
+    0 20px 50px rgba(0,0,0,0.35),
+    0 0 0 1px rgba(255,255,255,0.08);
+}
+
+.forecast-card:hover::before {
+  opacity: 1;
+}
+
+/* =========================
+   FORECAST ROW
+========================= */
+
+.forecast-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  width: 100%;
+  height: 100%;
+}
+
+/* =========================
+   LEFT SIDE
+========================= */
+
+.forecast-left {
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  flex: 1;
+}
+
+/* =========================
+   WEATHER ICONS
+========================= */
+
+.weather-icon {
+  font-size: 4.5rem;
+
+  flex-shrink: 0;
+
+  filter:
+    drop-shadow(0 4px 12px rgba(0,0,0,0.25));
+
+  opacity: 0.95;
+}
+
+.weather-icon.clear {
+  color: #ffd76a;
+}
+
+.weather-icon.cloudy {
+  color: #dce6ff;
+}
+
+.weather-icon.rain {
+  color: #7dc8ff;
+}
+
+.weather-icon.snow {
+  color: #eef7ff;
+}
+
+.weather-icon.storm {
+  color: #c9a8ff;
+}
+
+.weather-main-icon {
+  margin: 10px 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.35));
+
+  transition: none; /* or remove transition entirely */
+}
+
+/* REMOVE ANY CARD HOVER EFFECT ON ICON */
+.card:hover .weather-main-icon {
+  transform: none;
+}
+/* =========================
+   FORECAST TEXT
+========================= */
+
+.forecast-card p {
+  margin: 0;
+}
+
+.forecast-card .date {
+  font-size: 1rem;
+
+  font-weight: 600;
+
+  opacity: 0.92;
+}
+
+.forecast-card .temp {
+  font-size: 1.5rem;
+
+  font-weight: 700;
+
+  opacity: 0.96;
+
+  white-space: nowrap;
+}
+
+.forecast-card .code {
+  font-size: 0.95rem;
+
+  opacity: 0.72;
+
+  line-height: 1.4;
+}
+
+/* =========================
+   WEATHER BACKGROUNDS
+========================= */
+
+.app.clear {
+  background:
+    linear-gradient(
+      180deg,
+      #183b63,
+      #0b1f35
+    );
+}
+
+.app.clouds {
+  background:
+    linear-gradient(
+      180deg,
+      #202a36,
+      #121821
+    );
+}
+
+.app.rain {
+  background:
+    linear-gradient(
+      180deg,
+      #0b1622,
+      #111f2d
+    );
+}
+
+.app.snow {
+  background:
+    linear-gradient(
+      180deg,
+      #30445f,
+      #182433
+    );
+}
+
+.app.storm {
+  background:
+    linear-gradient(
+      180deg,
+      #05070a,
+      #10151d
+    );
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 768px) {
+  .app {
+    padding: 18px;
+  }
+
+  .searchBox {
+    gap: 10px;
+  }
+
+  .searchBox input {
+    height: 52px;
+  }
+
+  .searchBox button {
+    width: 52px;
+    height: 52px;
+  }
+
+  .forecast-card {
+    min-height: 125px;
+
+    padding: 22px;
+  }
+
+  .weather-icon {
+    font-size: 4rem;
+  }
+
+  .forecast-card .temp {
+    font-size: 1.35rem;
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 480px) {
+  .app {
+    padding: 14px;
+  }
+
+  .ui-layer {
+    gap: 16px;
+  }
+
+  .card {
+    padding: 24px 20px;
+  }
+
+  .card h1 {
+    font-size: 4rem;
+  }
+
+  .forecast-grid {
+    padding-bottom: 50px; /* extra breathing room */
+  }
+
+  .forecast-card {
+    min-height: 115px;
+
+    padding: 20px;
+  }
+
+  .forecast-row {
+    gap: 14px;
+  }
+
+  .weather-icon {
+    font-size: 3.5rem;
+  }
+
+  .forecast-card .date {
+    font-size: 0.92rem;
+  }
+
+  .forecast-card .temp {
+    font-size: 1.2rem;
+  }
+
+  .forecast-card .code {
+    font-size: 0.88rem;
+  }
+}
